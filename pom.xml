@@ -77,10 +77,8 @@
 	</licenses>
 
 	<modules>
-		<module>intercloud-util</module>
-		<module>xmpp-core</module>
-		<module>xmpp-rest</module>
-		<module>xmpp-occi</module>
+		<module>rwx4j-core</module>
+		<!-- module>xmpp-occi</module>
 		<module>xmpp-cep</module>
 		<module>xmpp-component</module>
 		<module>xmpp-client</module>
@@ -91,7 +89,7 @@
 		<module>intercloud-exchange</module>
 		<module>intercloud-gateway</module>
 		<module>intercloud-webapp</module>
-		<module>intercloud-client</module>
+		<module>intercloud-client</module -->
 	</modules>
 
 	<properties>
