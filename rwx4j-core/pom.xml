@@ -8,7 +8,7 @@
 		<version>0.3.0</version>
 	</parent>
 
-	<groupId>de.tu_berlin.cit.rwx4j</groupId>
+	<groupId>de.tu-berlin.cit.rwx4j</groupId>
 	<artifactId>rwx4j-core</artifactId>
 	<packaging>jar</packaging>
 

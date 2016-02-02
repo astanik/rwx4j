@@ -11,7 +11,7 @@
 		</xs:documentation>
 	</xs:annotation>
 
-	<xs:element name="resource_type">
+	<xs:element name="xwadl">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="documentation" type="documentationType"
