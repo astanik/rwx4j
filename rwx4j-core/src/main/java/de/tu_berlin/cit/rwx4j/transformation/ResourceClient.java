@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j.client;
+package de.tu_berlin.cit.rwx4j.transformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,11 +90,11 @@ public class ResourceClient {
 	}
 
 	public MethodInvocation buildMethodInvocation(Method method) {
-		RestDocument resourceDoc = createBasicResourceDocument();
+		RestDocument resourceDoc = createBasicRestDocument();
 		return new MethodInvocation(resourceDoc, method);
 	}
 
-	protected RestDocument createBasicResourceDocument() {
+	protected RestDocument createBasicRestDocument() {
 		RestDocument resourceDoc = RestDocument.Factory.newInstance();
 		resourceDoc.addNewRest().setPath(
 				this.doc.getXwadl().getPath());
@@ -142,7 +142,7 @@ public class ResourceClient {
 		return templates;
 	}
 
-	public XwadlDocument getResourceTypeDocument() {
+	public XwadlDocument getXwadlDocument() {
 		return doc;
 	}
 

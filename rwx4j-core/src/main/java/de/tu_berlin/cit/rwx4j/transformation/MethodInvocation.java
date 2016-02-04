@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j.client;
+package de.tu_berlin.cit.rwx4j.transformation;
 
 import de.tu_berlin.cit.rwx4j.representations.PlainText;
 import de.tu_berlin.cit.rwx4j.representations.Representation;

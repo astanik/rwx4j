@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j;
+package de.tu_berlin.cit.rwx4j.container;
 
 
 import java.lang.reflect.InvocationTargetException;
 
+import de.tu_berlin.cit.rwx4j.XmppURI;
 import de.tu_berlin.cit.rwx4j.annotations.Consumes;
 import de.tu_berlin.cit.rwx4j.annotations.Produces;
 import de.tu_berlin.cit.rwx4j.annotations.XmppMethod;

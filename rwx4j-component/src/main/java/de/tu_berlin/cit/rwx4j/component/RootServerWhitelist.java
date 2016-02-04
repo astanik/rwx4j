@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j.representations;
+package de.tu_berlin.cit.rwx4j.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Basic representation class.
+ * This class provides a white list for all known trusted root server. 
  * 
  * @author Alexander Stanik <alexander.stanik@tu-berlin.de>
  */
-public abstract class Representation {
+public class RootServerWhitelist {
 
-	public abstract List<Representation> getTemplates();
-	
-	public abstract void readRepresentation(String stringRepresentation);
-	
-	public abstract StringBuilder writeRepresentation(StringBuilder representationBuilder);
+	public static final List<String> list;
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder = this.writeRepresentation(builder);
-		return builder.toString();
+	static {
+		list = new ArrayList<String>();
+
+		// root server
+		list.add("root.intercloud-network.de");
+		// list.add("root.intercloudtestbed.org");
 	}
+
 }

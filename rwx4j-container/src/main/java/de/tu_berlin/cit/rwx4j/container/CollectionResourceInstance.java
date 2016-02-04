@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j;
+package de.tu_berlin.cit.rwx4j.container;
 
 import java.util.Collection;
 
-import de.tu_berlin.cit.rwx4j.ResourceInstance;
 import de.tu_berlin.cit.rwx4j.annotations.Produces;
 import de.tu_berlin.cit.rwx4j.annotations.XmppMethod;
+import de.tu_berlin.cit.rwx4j.container.ResourceInstance;
 import de.tu_berlin.cit.rwx4j.representations.UriListText;
 
 /**

@@ -14,27 +14,45 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j.representations;
+package de.tu_berlin.cit.rwx4j.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Basic representation class.
+ * TODO
  * 
  * @author Alexander Stanik <alexander.stanik@tu-berlin.de>
  */
-public abstract class Representation {
+public class IntercloudDiscoFeatures {
 
-	public abstract List<Representation> getTemplates();
+	private String jid;
 	
-	public abstract void readRepresentation(String stringRepresentation);
+	private List<String> features;
 	
-	public abstract StringBuilder writeRepresentation(StringBuilder representationBuilder);
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder = this.writeRepresentation(builder);
-		return builder.toString();
+	public IntercloudDiscoFeatures(String jid) {
+		this(jid, new ArrayList<String>());
 	}
+
+	public IntercloudDiscoFeatures(String jid, List<String> features) {
+		this.jid = jid;
+		this.features = features;
+	}
+
+	public String getJid() {
+		return jid;
+	}
+
+	public void setJid(String jid) {
+		this.jid = jid;
+	}
+
+	public List<String> getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(List<String> features) {
+		this.features = features;
+	}
+
 }

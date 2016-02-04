@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.tu_berlin.cit.rwx4j;
+package de.tu_berlin.cit.rwx4j.container;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
