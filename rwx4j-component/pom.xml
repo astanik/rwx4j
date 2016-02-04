@@ -8,7 +8,7 @@
 		<version>0.3.0</version>
 	</parent>
 
-	<groupId>de.tu_berlin.cit.rwx4j</groupId>
+	<groupId>de.tu-berlin.cit.rwx4j</groupId>
 	<artifactId>rwx4j-component</artifactId>
 	<packaging>jar</packaging>
 
@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>de.tu-berlin.cit.rwx4j</groupId>
 			<artifactId>rwx4j-container</artifactId>
-			<version>0.0.1</version>
+			<version>0.3.0</version>
 		</dependency>
 		<!-- whack v1.0.0 dependencies -->
 		<!-- dependency>
