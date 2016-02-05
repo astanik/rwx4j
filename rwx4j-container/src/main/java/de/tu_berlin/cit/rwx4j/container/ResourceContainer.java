@@ -18,11 +18,13 @@ package de.tu_berlin.cit.rwx4j.container;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import de.tu_berlin.cit.rwx4j.XmppURI;
 import de.tu_berlin.cit.rwx4j.annotations.Consumes;
 import de.tu_berlin.cit.rwx4j.annotations.Produces;
 import de.tu_berlin.cit.rwx4j.annotations.XmppMethod;
+import de.tu_berlin.cit.rwx4j.plugin.IContainerPlugin;
 import de.tu_berlin.cit.rwx4j.representations.Representation;
 import de.tu_berlin.cit.rwx4j.rest.RestDocument;
 import de.tu_berlin.cit.rwx4j.rest.ActionDocument.Action;
@@ -32,17 +34,38 @@ import de.tu_berlin.cit.rwx4j.xwadl.XwadlDocument;
 
 
 /**
- * TODO
+ * Main container implementation.
  * 
  * @author Alexander Stanik <alexander.stanik@tu-berlin.de>
  */
 public class ResourceContainer extends ResourceInstance {
 
-	
+	private final ArrayList<IContainerPlugin> plugins = new ArrayList<IContainerPlugin>();
+
+	/**
+	 * Default constructor.
+	 * 
+	 * @param uri The base URI of this container.
+	 */
 	public ResourceContainer(XmppURI uri) {
 		super(uri.toString());
 	}
 	
+	/**
+	 * Adds a new plugin to the container.
+	 * 
+	 * @param plugin The plugin to add.
+	 */
+	public void addPlugin(IContainerPlugin plugin) {
+		this.plugins.add(plugin);
+	}
+	
+	/**
+	 * Generate XWADL document for a particular resource.
+	 * 
+	 * @param path The path of the resource.
+	 * @return Returns the generated XWADL document.
+	 */
 	public XwadlDocument getXWADL(String path) {
 		logger.info("An XWADL is requested for path=" + path);
 		// search instance
@@ -51,9 +74,21 @@ public class ResourceContainer extends ResourceInstance {
 			throw new RuntimeException("Failed: ResourceContainer: "
 					+ "Resource not found");
 		
-		return XwadlBuilder.build(path, instance);
+		// build xwadl
+		XwadlDocument xwadl = XwadlBuilder.build(path, instance);
+		// extend xwadl by plugins
+		for(IContainerPlugin plugin : this.plugins) {
+			plugin.extendXwadl(xwadl, path, instance);
+		}
+		return xwadl;
 	}
 
+	/**
+	 * Invoke an operation in order to transfer a resource state.
+	 * 
+	 * @param xmlRequest The REST request.
+	 * @return Returns the REST response.
+	 */
 	public RestDocument execute(RestDocument xmlRequest) {
 		logger.info("An invocation is requested with xml=" + xmlRequest.toString());
 		// create response document

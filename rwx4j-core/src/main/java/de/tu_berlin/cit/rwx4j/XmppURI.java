@@ -21,7 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * TODO
+ * This class facilitates XMPP URI handling.
  * 
  * @author Alexander Stanik <alexander.stanik@tu-berlin.de>
  */

@@ -25,7 +25,7 @@ import java.net.URISyntaxException;
 
 
 /**
- * TODO
+ * Tests XMPP URI.
  * 
  * @author Alexander Stanik <alexander.stanik@tu-berlin.de>
  */
