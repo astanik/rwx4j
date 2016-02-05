@@ -18,18 +18,20 @@ package de.tu_berlin.cit.rwx4j.container;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import de.tu_berlin.cit.rwx4j.XmppURI;
 import de.tu_berlin.cit.rwx4j.annotations.Consumes;
+import de.tu_berlin.cit.rwx4j.annotations.Parameter;
 import de.tu_berlin.cit.rwx4j.annotations.Produces;
+import de.tu_berlin.cit.rwx4j.annotations.XmppAction;
 import de.tu_berlin.cit.rwx4j.annotations.XmppMethod;
 import de.tu_berlin.cit.rwx4j.plugin.IContainerPlugin;
 import de.tu_berlin.cit.rwx4j.representations.Representation;
 import de.tu_berlin.cit.rwx4j.rest.RestDocument;
 import de.tu_berlin.cit.rwx4j.rest.ActionDocument.Action;
 import de.tu_berlin.cit.rwx4j.rest.MethodDocument.Method;
-import de.tu_berlin.cit.rwx4j.rest.ParameterDocument.Parameter;
 import de.tu_berlin.cit.rwx4j.xwadl.XwadlDocument;
 
 
@@ -119,9 +121,17 @@ public class ResourceContainer extends ResourceInstance {
 		
 		// invoke action
 		if(xmlRequest.getRest().isSetAction()) {
-			this.invokeAction(xmlResponse.getRest().getAction(), instance);
+			try {
+				this.invokeAction(xmlResponse.getRest().getAction(), instance);
+			} catch (URISyntaxException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RuntimeException("Failed: ResourceContainer: "
+						+ e.getMessage());
+			}
 			// remove request part
-			Parameter[] params = xmlResponse.getRest().getAction().getParameterArray();
+			de.tu_berlin.cit.rwx4j.rest.ParameterDocument.Parameter[] params = 
+					xmlResponse.getRest().getAction().getParameterArray();
 			for(int i = params.length; i >= 0; i--) {
 				xmlResponse.getRest().getAction().removeParameter(i);
 			}
@@ -212,11 +222,113 @@ public class ResourceContainer extends ResourceInstance {
 		return false;
 	}
 
-	protected void invokeAction(Action xmlAction, ResourceInstance instance) {
-		// TODO Auto-generated method stub
+	protected void invokeAction(Action xmlAction, ResourceInstance instance) throws URISyntaxException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		
+		java.lang.reflect.Method method = this.searchAction(xmlAction, instance);
+		if(method == null) {
+			throw new RuntimeException("Failed: ResourceContainer: "
+					+ "Action not found");
+		}
+		
+		// create parameters array
+		java.lang.reflect.Parameter[] parameters = method.getParameters();
+		Object[] params = new Object[parameters.length];
+		for (int i = 0; i < parameters.length; i++) {
+			java.lang.reflect.Parameter parameter = parameters[i];
+			if (parameter.isAnnotationPresent(Parameter.class)) {
+				params[i] = createParameter(parameter, xmlAction.getParameterArray());
+			} else {
+				throw new RuntimeException("Failed: ResourceContainer: "
+						+ "Parameter is not annotated");
+			}
+		}
+
+		// switch result
+		Class<?> returnType = method.getReturnType();
+		if(returnType.isAssignableFrom(String.class)) {
+			String result = (String) method.invoke(instance, params);
+			xmlAction.addNewResult().setSTRING(result);
+		} else if(returnType.isAssignableFrom(Integer.class)) {
+			Integer result = (Integer) method.invoke(instance, params);
+			xmlAction.addNewResult().setINTEGER(result);
+		} else if(returnType.isAssignableFrom(Double.class)) {
+			Double result = (Double) method.invoke(instance, params);
+			xmlAction.addNewResult().setDOUBLE(result);
+		} else if(returnType.isAssignableFrom(Boolean.class)) {
+			Boolean result = (Boolean) method.invoke(instance, params);
+			xmlAction.addNewResult().setBOOLEAN(result);
+		} else if(returnType.isAssignableFrom(XmppURI.class)) {
+			String result = method.invoke(instance, params).toString();
+			xmlAction.addNewResult().setLINK(result);
+		} else { // void
+			method.invoke(instance, params);
+		}
+
 	}
 
-	
+	private Object createParameter(java.lang.reflect.Parameter parameter,
+			de.tu_berlin.cit.rwx4j.rest.ParameterDocument.Parameter[] parameterArray) throws URISyntaxException {
+		// search parameter by name
+		Parameter parAnno = parameter.getAnnotation(Parameter.class);
+		String name = parAnno.value();
+		for(de.tu_berlin.cit.rwx4j.rest.ParameterDocument.Parameter xmlParameter : parameterArray) {
+			if(name.equals(xmlParameter.getName())) {
+				// if parameter was found
+				Class<?> parameterType = parameter.getType();
+				// check type
+				if(parameterType.isAssignableFrom(String.class)
+						&& xmlParameter.isSetSTRING()) {
+					return xmlParameter.getSTRING();
+				} else if(parameterType.isAssignableFrom(Integer.class)
+						&& xmlParameter.isSetINTEGER()) {
+					return new Integer(xmlParameter.getINTEGER());
+				} else if(parameterType.isAssignableFrom(Double.class)
+						&& xmlParameter.isSetDOUBLE()) {
+					return new Double(xmlParameter.getDOUBLE());
+				} else if(parameterType.isAssignableFrom(Boolean.class)
+						&& xmlParameter.isSetBOOLEAN()) {
+					return new Boolean(xmlParameter.getBOOLEAN());
+				} else if(parameterType.isAssignableFrom(XmppURI.class)
+						&& xmlParameter.isSetLINK()) {
+					return new XmppURI(xmlParameter.getLINK());
+				}
+			}
+		}
+		
+		// set default
+		if(!parAnno.defaultValue().isEmpty()) {
+			Class<?> parameterType = parameter.getType();
+			if(parameterType.isAssignableFrom(String.class)) {
+				return parAnno.defaultValue();
+			} else if(parameterType.isAssignableFrom(Integer.class)) {
+				return new Integer(parAnno.defaultValue());
+			} else if(parameterType.isAssignableFrom(Double.class)) {
+				return new Double(parAnno.defaultValue());
+			} else if(parameterType.isAssignableFrom(Boolean.class)) {
+				return new Boolean(parAnno.defaultValue());
+			} else if(parameterType.isAssignableFrom(XmppURI.class)) {
+				return new XmppURI(parAnno.defaultValue());
+			}
+		} else {
+			throw new RuntimeException("Failed: ResourceContainer: "
+					+ "Parameter cannot be localized");
+		}
+
+		// this point should never be reached
+		return null;
+	}
+
+	protected java.lang.reflect.Method searchAction(Action xmlAction,
+			ResourceInstance instance) {
+		String actionName = xmlAction.getName();
+		// search methods
+		for(java.lang.reflect.Method method : instance.getClass().getMethods()) {
+			// is method of searched type
+			if(method.isAnnotationPresent(XmppAction.class))
+				if(actionName.equals(method.getAnnotation(XmppAction.class).value()))
+					return method;
+		}
+		return null;
+	}
 	
 }

@@ -155,6 +155,12 @@ public class XwadlBuilder {
 		} else if(parameterType.isAssignableFrom(XmppURI.class)) {
 			xmlParameter.setType(ParameterType.LINK);
 		}
+
+		// set default value
+		String defVal = parAnno.defaultValue();
+		if(!defVal.isEmpty()) {
+			xmlParameter.setDefault(defVal);
+		}
 		
 		// set parameter documentation
 		String documentation = parAnno.documentation();
@@ -188,7 +194,6 @@ public class XwadlBuilder {
 			doc.setTitle("Return type");
 			doc.setStringValue(documentation);
 		}
-		
 	}
 
 }

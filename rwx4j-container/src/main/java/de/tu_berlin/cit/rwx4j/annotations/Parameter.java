@@ -40,4 +40,10 @@ public @interface Parameter {
 	 * @return documentation
 	 */
 	String documentation() default "";
+	
+	/**
+	 * The optional default value for this parameter.
+	 * @return default value
+	 */
+	String defaultValue() default "";
 }

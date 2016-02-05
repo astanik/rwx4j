@@ -79,7 +79,7 @@
 			<xs:choice>
 				<xs:element name="STRING" type="xs:string" minOccurs="1"
 					maxOccurs="1" />
-				<xs:element name="INTEGER" type="xs:integer" minOccurs="1"
+				<xs:element name="INTEGER" type="xs:int" minOccurs="1"
 					maxOccurs="1" />
 				<xs:element name="DOUBLE" type="xs:double" minOccurs="1"
 					maxOccurs="1" />
@@ -97,7 +97,7 @@
 			<xs:choice>
 				<xs:element name="STRING" type="xs:string" minOccurs="1"
 					maxOccurs="1" />
-				<xs:element name="INTEGER" type="xs:integer" minOccurs="1"
+				<xs:element name="INTEGER" type="xs:int" minOccurs="1"
 					maxOccurs="1" />
 				<xs:element name="DOUBLE" type="xs:double" minOccurs="1"
 					maxOccurs="1" />
