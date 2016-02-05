@@ -19,6 +19,7 @@
 				<xs:element ref="grammars" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="method" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="action" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="subresources" minOccurs="0" maxOccurs="1" />
 			</xs:sequence>
 			<xs:attribute name="path" type="xs:string" use="required" />
 		</xs:complexType>
@@ -129,5 +130,14 @@
 			<xs:enumeration value="LINK" />
 		</xs:restriction>
 	</xs:simpleType>
+
+	<xs:element name="subresources">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="subresource" type="xs:anyURI" 
+					minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 </xs:schema>
