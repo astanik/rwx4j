@@ -39,13 +39,11 @@ public class XwadlIQProvider extends IQProvider<XwadlIQ> {
 	@Override
 	public XwadlIQ parse(XmlPullParser parser, int initialDepth)
 			throws XmlPullParserException, IOException, SmackException {
-		long start = System.currentTimeMillis();
 		// convert to string
 		String str = XmlPullParserConverter.convert2String(parser);
 		// create xwadl
 		try {
 			XwadlDocument xwadl = XwadlDocument.Factory.parse(str);
-			logger.info("XML --> XmlBean: {} ms", System.currentTimeMillis() - start);
 			return new XwadlIQ(xwadl);
 		} catch (XmlException e) {
 			throw new XmlPullParserException(e.getMessage());

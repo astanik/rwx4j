@@ -15,8 +15,8 @@ public interface IXmppService {
     void connect(XmppURI uri, String password) throws XMPPException, IOException, SmackException;
     void disconnect();
 
-    List<String> discoverRestfulItems(XmppURI uri) throws XMPPException, IOException, SmackException;
+    List<XmppURI> discoverRestfulItems(XmppURI uri) throws XMPPException, IOException, SmackException;
 
     RestDocument sendRestDocument(XmppURI uri, RestDocument document) throws XMPPException, IOException, SmackException;
-    XwadlDocument getXwadlDocument(XmppURI uri) throws XMPPException, IOException, SmackException;
+    XwadlDocument receiveXwadlDocument(XmppURI uri) throws XMPPException, IOException, SmackException;
 }
