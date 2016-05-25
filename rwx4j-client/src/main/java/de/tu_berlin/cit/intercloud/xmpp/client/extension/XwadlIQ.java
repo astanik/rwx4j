@@ -30,7 +30,7 @@ import de.tu_berlin.cit.rwx4j.xwadl.XwadlDocument.Xwadl;
  */
 public class XwadlIQ extends IQ {
 
-	public static final String ELEMENT = "resource_type";
+	public static final String ELEMENT = "xwadl";
 	public static final String NAMESPACE = "urn:xmpp:rest-xwadl";
 
 	final private XwadlDocument xwadl;

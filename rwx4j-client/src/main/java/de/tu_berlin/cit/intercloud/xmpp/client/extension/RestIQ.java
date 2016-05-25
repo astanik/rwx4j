@@ -34,7 +34,7 @@ import de.tu_berlin.cit.rwx4j.rest.MethodDocument;
  */
 public class RestIQ extends IQ {
 
-	public static final String ELEMENT = "resource";
+	public static final String ELEMENT = "rest";
 	public static final String NAMESPACE = "urn:xmpp:xml-rest";
 
 	private final RestDocument doc;
